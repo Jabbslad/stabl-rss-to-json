@@ -30,7 +30,7 @@
                 if (err) {
                     reject(err);
                 }
-                resolve(parseFeed);
+                resolve(parseFeed(rss));
             });
         });
     }
