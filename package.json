@@ -1,0 +1,29 @@
+{
+  "name": "stabl-rss-to-json",
+  "version": "1.0.0",
+  "description": "Parse itunes rss feed and convert to json",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jabbslad/stabl-rss-to-json.git"
+  },
+  "keywords": [
+    "stabl",
+    "itunes",
+    "rss"
+  ],
+  "author": "Jabbslad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jabbslad/stabl-rss-to-json/issues"
+  },
+  "homepage": "https://github.com/Jabbslad/stabl-rss-to-json#readme",
+  "dependencies": {
+    "parse-rss": "^1.0.3",
+    "request-promise": "^4.1.1",
+    "underscore": "^1.8.3"
+  }
+}
