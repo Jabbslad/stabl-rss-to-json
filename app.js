@@ -4,18 +4,24 @@
     const request = require('request-promise');
     const _ = require('underscore');
 
+    function duration(old) {
+        var sum = 0;
+        var arr = old.split(':');
+        for(var i = arr.length; i > 0; i-- ) {
+            sum += arr[i - 1] * Math.pow(60, arr.length - i);
+        }
+        return sum;
+    }
+
     function parseItem(item) {
         var meta = item.meta;
         var parsed = {};
 
-        _.each(['title', 'link', 'guid', 'pubDate', 'author', 'description'], key => {
+        _.each(['title', 'pubDate', 'description'], key => {
             parsed[key] = item[key];
         });
-        parsed.feedUrl = meta.xmlUrl;
-        parsed.collectionName = meta.title;
-        parsed.categories = meta.categories;
-        parsed.thumbnail = item.image.url || meta.image.url || '';
-        parsed.enclosure = item["media:content"]['@'];
+        parsed.enclosure = item.enclosures[0];
+        parsed.enclosure.duration = duration(item['itunes:duration']['#']);
 
         return parsed;
     }
@@ -35,7 +41,7 @@
         });
     }
 
-    function feedUrlFromItunesCollectionId(id) {
+    function feedFromItunesCollectionId(id) {
         return new Promise((resolve, reject) => {
             request({method: 'GET', uri: "https://itunes.apple.com/lookup?id=" + id})
                 .then(response => {
@@ -43,8 +49,7 @@
                     if (parsed.resultCount !== 1) {
                         reject(new Error('Expected 1 result, found ' + parsed.resultCount));
                     }
-                    var feedUrl = parsed.results[0].feedUrl;
-                    resolve(feedUrl);
+                    resolve(parsed.results[0]);
                 })
                 .catch(reject);
         });
@@ -52,6 +57,6 @@
 
     module.exports = {
         parseFeedUrl : parseFeedUrl,
-        feedUrlFromItunesCollectionId : feedUrlFromItunesCollectionId
+        feedFromItunesCollectionId : feedFromItunesCollectionId
     };
 })();
