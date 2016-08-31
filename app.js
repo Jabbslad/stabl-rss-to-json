@@ -21,7 +21,7 @@
             parsed[key] = item[key];
         });
         parsed.enclosure = item.enclosures[0];
-        parsed.enclosure.duration = duration(item['itunes:duration']['#']);
+        parsed.enclosure.duration = item['itunes:duration'] !== undefined ? duration(item['itunes:duration']['#']) : 0;
 
         return parsed;
     }
